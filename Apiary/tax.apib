@@ -1,0 +1,487 @@
+# Calculate Tax
+
+Created for people who want to know how much tax they have to pay and what they have to pay.
+
+## All Tax [/tax]
+
+### List All Tax [GET]
+
++ Response 200 (application/json)
+
+    + Body
+
+            {
+               "question":"What tax would you like to use?",
+               "choices":[
+                  {
+                     "choice":"PIT",
+                     "description":"กรณีเป็นมนุษย์เงินเดือน",
+                     "link":"/tax/pit"
+                  },
+                  {
+                     "choice":"CIT",
+                     "description":"กรณีเป็นเจ้าของธุรกิจ",
+                     "link":"/tax/cit"
+                  },
+                  {
+                     "choice":"VAT",
+                     "description":"กรณีอยากคิดภาษีรายได้เพิ่ม",
+                     "link":"/tax/vat"
+                  }
+               ]
+            }
+        
++ Response 404 (application/json)
+
+        {
+            "message": "Not Found"
+        }
+        
+## Tax PIT [/tax/pit]
+
+### Info Pit [GET]
+
++ Response 200 (application/json)
+
+        {
+           "assessable_income":{
+              "forty_1":"เงินได้เนื่องจากการจ้างแรงงาน เช่น เงินเดือน",
+              "forty_2":"เงินได้เนื่องจากหน้าที่หรือตำแหน่งงานที่ทำ หรือจากการรับทำงานให้ เช่น ค่าธรรมเนียม",
+              "forty_3":"ค่าแห่งกู๊ดวิลล์ ค่าแห่งลิขสิทธิ์หรือสิทธิอย่างอื่น เงินปี หรือเงินได้ที่มีลักษณะ เป็นเงินรายปี",
+              "forty_4":"ดอกเบี้ย เงินปันผล เงินส่วนแบ่งกำไร เงินลดทุน เงินเพิ่มทุน",
+              "forty_5":"เงินได้จากการให้เช่าทรัพย์สิน",
+              "forty_6":"เงินได้จากวิชาชีพอิสระ คือวิชากฎหมาย การประกอบโรคศิลป วิศวกรรม",
+              "forty_7":"เงินได้จากการรับเหมาที่ผู้รับเหมาต้องลงทุนด้วยการจัดหาสัมภาระ",
+              "forty_8":"เงินได้จากการธุรกิจ การพาณิชย์ การเกษตร การอุตสาหกรรม การขนส่ง การขายอสั หรือการอื่นนอกจากที่ระบุไว้ในประเภทที่ 1 ถึงประเภทที่ 7งหาริมทรัพย์"
+           },
+           "less_expenses":{
+              "forty_1":"50% ไม่เกิน 100,000 บาทสามารถรวม 40(1),40(2) เเต่ลดได้ไม่เกิน 100,000 บาท",
+              "forty_2":"50% ไม่เกิน 100,000 บาทสามารถรวม 40(1),40(2) เเต่ลดได้ไม่เกิน 100,000 บาท",
+              "forty_3":"50% ไม่เกิน 100,000 บาท หรือ ตามจริง",
+              "forty_4":"หักไม่ได้",
+              "forty_5":"ตามจริง หรือ อัตราเหมา บ้าน30% ที่ดินเกษตร20% ที่ๆมิได้ใช้ในการเกษตร15% ยานพาหนะ30% ทรัพย์สินอื่น10%",
+              "forty_6":"ตามจริง หรือ อัตราเหมา ประกอบโรคศิลปะ60% กฎหมาย วิศวกรรมฯ30%",
+              "forty_7":"ตามจริง หรือ อัตราเหมา 60%",
+              "forty_8":"ตามจริง หรือ อัตราเหมา 40% เเละ 60%"
+           },
+           "deductible":{
+              "personal":60000,
+              "child_per_person":30000,
+              "parent_per_person":30000,
+              "disabled":60000,
+              "pregnancy_childbirth":60000
+           }
+        }
+        
++ Response 404 (application/json)
+
+        {
+            "Massage":"Not Found"
+        }
+ 
+### Calculate Pit [POST]
+
++ Request (application/json)
+
+        {
+            "user_id": 1,
+            "assessable_income":{
+                "forty_1": 1000000,
+                "forty_2": 0,
+                "forty_3": 0,
+                "forty_4": 0,
+                "forty_5": 0,
+                "forty_6": 700000,
+                "forty_7": 0,
+                "forty_8": 400000
+            },
+            "deductible": {
+                "personal": 1,
+                "child_per_person": 3,
+                "parent_per_person": 2,
+                "disabled": 0,
+                "pregnancy_childbirth": 0
+            }
+        }
+
++ Response 201 (application/json)
+
+        {
+            "assessable_income": 2100000,
+            "deductible_assessable_income": 1700000,
+            "expenses": 100000,
+            "forty_1": 1000000,
+            "individual_income_tax": 5500,
+            "ladder_personal_income_tax": 290000,
+            "net_income": 2000000,
+            "recommend_choosing": "ladder_personal_income_tax",
+            "response_at": "2015-08-05T08:40:51.620Z",
+            "tax_rate": "25%",
+            "tax_reduction": 300000
+        }
+        
++ Response 404 (application/json)
+
+        {
+            "massage":"Not Found"
+        }
+
+## Tax CIT [/tax/cit]
+
+### Info Cit [GET]
+
++ Response 200 (application/json)
+
+        {
+           "question":"SME OR NON-SME",
+           "choices":[
+              {
+                 "choice":"SME",
+                 "income":"รายได้",
+                 "expenses":"ค่าใช้จ่าย"
+              },
+              {
+                 "choice":"NON-SME",
+                 "net_profit":"กำไรสุทธิ"
+              }
+           ]
+        }
+        
++ Response 404 (application/json)
+
+        {
+            "massage":"Not Found"
+        }
+        
+### Calculate Cit [POST]
+
++ Request (application/json)
+
+        {
+            "user_id": 2,
+            "data": {
+                "types": "NON SME",
+                "net_profit": 100000,
+                "income": 0,
+                "expenses": 0
+            }
+        }
+
++ Response 200 (application/json)
+
+        {
+            "tax_value": 20000,
+            "response_at": "2015-08-05T08:40:51.620Z"
+        }
+
++ Response 404 (application/json)
+
+        {
+            "massage":"Not Found"
+        }
+        
+## Tax VAT [/tax/vat]
+
+### Info Vat [GET]
+
++ Response 200 (application/json)
+
+        {
+           "question":"Product OR Service",
+           "choices":[
+              {
+                 "choice":"Product",
+                 "product_name":"ชื่อสินค้า",
+                 "product_price":"ราคาสินค้า"
+              },
+              {
+                 "choice":"Service",
+                 "service_name":"ชื่อบริการ",
+                 "service_price":"ราคาบริการ"
+              }
+           ]
+        }
+        
++ Response 404 (application/json)
+
+        {
+            "massage":"Not Found"
+        }
+
+### Calculate Vat [POST]
+
++ Request (application/json)
+
+        {
+            "user_id": 2,
+            "data": {
+                "types": "Product",
+                "product_name": "light",
+                "product_price": 1070,
+                "service_name": "",
+                "service_price": 0
+            }
+        }
+
++ Response 200 (application/json)
+
+        {
+            "vat": "7%",
+            "net_income": 74.9,
+            "response_at": "2015-08-05T08:40:51.620Z"
+        }
+        
++ Response 404 (application/json)
+
+        {
+            "massage":"Not Found"
+        }
+                
+## Members [/members]
+
+### Add a new members [POST]
+
++ Request (application/json)
+
+        {
+           "name":"Tom",
+           "email":"tom@example.com",
+           "password":"xxxxx",
+           "age":25
+        }
+
++ Response 201 (application/json)
+
+        {
+            "message":"Successfully Built",
+            "response_at": "2015-08-05T08:40:51.620Z",
+            "data": {
+                "user_id": 4,
+                "name": "Tom",
+                "email": "tom@example.com",
+                "age": 25,
+                "right": "member"
+            }
+        }
+        
++ Response 404 (application/json)
+
+        {
+            "message":"Not Found"
+        }
+        
+## Feature Tax [/feature/{user_id}]
+
+### Show List All Tax [GET]
+
++ Response 200 (application/json)
+
+        {
+            "user_id": 0,
+            "right": "admin",
+            "choices": [
+                {
+                    "choice": "PIT",
+                    "link": "/tax/pit"
+                }, {
+                    "choice": "CIT",
+                    "link": "/tax/cit"
+                }, {
+                    "choice": "VAT",
+                    "link": "/tax/vat"
+                }
+            ]
+        }
+
+### Update Parameter [PATCH]
+
++ Request (application/json)
+
+            {
+               "user_id":0,
+               "right":"admin",
+               "update":[
+                  {
+                     "tax":"VAT",
+                     "detail":[
+                        {
+                           "vat":"8%"
+                        }
+                     ]
+                  }
+               ]
+            }   
+        
++ Response 200 (application/json)
+
+        {
+            "message": "Update complete"
+        }
+
++ Response 401 (application/json)
+
+        {
+            "message":"No access"
+        }
+
++ Response 404 (application/json)
+
+        {
+            "message":"Can't find data to update"
+        }
+        
+### Delete tax [DELETE]
+
++ Request (application/json)
+
+        {
+            "user_id": 3,
+            "tax": "VAT",
+            "response_at": "2015-08-05T08:40:51.620Z"
+        }
+
++ Response 200 (application/json)
+
+        {
+            "massage":"Delete tax complete"
+        }
+
++ Response 400 (application/json)
+
+        {
+            "message":"Fail to delete"
+        }
+
++ Response 404 (application/json)
+
+        {
+            "message":"Can't find data to delete"
+        }
+
+## User ID [/members/{user_id}]
+
+### Edit user [PUT]
+
++ Request (application/json)
+
+            {
+               "user_id":3,
+               "original_id":{
+                  "name":"Tom",
+                  "email":"tom@example.com",
+                  "password":"xxxxx",
+                  "age":25
+               },
+               "new_id":{
+                  "new_name":"Tom",
+                  "new_email":"tom@example.com",
+                  "new_password":"1xxxx",
+                  "new_age":25
+               }
+            }
+        
++ Response 200 (application/json)
+
+        {
+            "message": "complete"
+        }
+
+### Delete user [DELETE]
+
++ Request (application/json)
+
+        [
+          {
+                "user_id": 3,
+                "confirm": [
+                  {
+                    "email": "tom@example.com",
+                    "password": "xxxxx"
+                  }
+                ]
+          }
+        ]
+
++ Response 200 (application/json)
+
+        {
+            "message":"Delete user complete"
+        }
+        
++ Response 400 (application/json)
+
+        {
+            "message":"Fail to delete"
+        }
+
++ Response 404 (application/json)
+
+        {
+            "message":"Can't find data to delete"
+        }
+        
+## History [/history/{user_id}]
+
+### History all [GET]
+
++ Parameters
+
+    + user_id (required, number) - The ID of the user
+    
++ Response 200 (application/json)
+    
+    + Body
+
+            {
+                "user_id": 3,
+                "pit": [
+                    {
+                        "assessable_income": 2100000,
+                        "forty_1": 1000000,
+                        "expenses": 400000,
+                        "net_income": 1700000,
+                        "tax_reduction": 150000,
+                        "deductible_assessable_income": 1550000,
+                        "tax_rate": "25%",
+                        "individual_income_tax": 5500,
+                        "ladder_personal_income_tax": 252500,
+                        "recommend_choosing": "Ladder personal income tax",
+                        "response_at": "2015-08-05T08:40:51.620Z"
+                    },
+                    {
+                        "assessable_income": 2100000,
+                        "forty_1": 1000000,
+                        "expenses": 400000,
+                        "net_income": 1700000,
+                        "tax_reduction": 150000,
+                        "deductible_assessable_income": 1550000,
+                        "tax_rate": "25%",
+                        "individual_income_tax": 5500,
+                        "ladder_personal_income_tax": 252500,
+                        "recommend_choosing": "Ladder personal income tax",
+                        "response_at": "2015-08-05T08:40:51.620Z"
+                    }
+                ],
+                "cit": [
+                    {
+                        "tax_value": 20000,
+                        "response_at": "2015-08-05T08:40:51.620Z"
+                    },
+                    {
+                        "tax_value": 20000,
+                        "response_at": "2015-08-05T08:40:51.620Z"
+                    }
+                ],
+                "vat": [
+                    {
+                        "vat": "7%",
+                        "net_income": 74.9,
+                        "response_at": "2015-08-05T08:40:51.620Z"
+                    },
+                    {
+                        "vat": "7%",
+                        "net_income": 74.9,
+                        "response_at": "2015-08-05T08:40:51.620Z"
+                    }
+                ]
+            }

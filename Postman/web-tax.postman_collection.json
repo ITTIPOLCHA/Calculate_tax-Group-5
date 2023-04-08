@@ -1,0 +1,326 @@
+{
+	"info": {
+		"_postman_id": "cd0b27d0-b832-4c4a-aebb-48e10b64b4b0",
+		"name": "web-tax",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "26418524"
+	},
+	"item": [
+		{
+			"name": "tax",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/tax",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"tax"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "pit",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/tax/pit",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"tax",
+						"pit"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "pit",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"[\r",
+							"  {\r",
+							"    \"user_id\": 1,\r",
+							"    \"assessable_income\": [\r",
+							"      {\r",
+							"        \"forty_1\": 1000000,\r",
+							"        \"forty_2\": 0,\r",
+							"        \"forty_3\": 0,\r",
+							"        \"forty_4\": 0,\r",
+							"        \"forty_5\": 0,\r",
+							"        \"forty_6\": 700000,\r",
+							"        \"forty_7\": 0,\r",
+							"        \"forty_8\": 400000\r",
+							"      }\r",
+							"    ],\r",
+							"    \"deductible\": [\r",
+							"      {\r",
+							"        \"personal\": 1,\r",
+							"        \"child_per_person\": 1,\r",
+							"        \"parent_per_person\": 2,\r",
+							"        \"disabled\": 0,\r",
+							"        \"pregnancy_childbirth\": 0\r",
+							"      }\r",
+							"    ]\r",
+							"  }\r",
+							"]"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"[\r",
+							"  {\r",
+							"    \"user_id\": 1,\r",
+							"    \"assessable_income\": [\r",
+							"      {\r",
+							"        \"forty_1\": 1000000,\r",
+							"        \"forty_2\": 0,\r",
+							"        \"forty_3\": 0,\r",
+							"        \"forty_4\": 0,\r",
+							"        \"forty_5\": 0,\r",
+							"        \"forty_6\": 700000,\r",
+							"        \"forty_7\": 0,\r",
+							"        \"forty_8\": 400000\r",
+							"      }\r",
+							"    ],\r",
+							"    \"deductible\": [\r",
+							"      {\r",
+							"        \"personal\": 1,\r",
+							"        \"child_per_person\": 1,\r",
+							"        \"parent_per_person\": 2,\r",
+							"        \"disabled\": 0,\r",
+							"        \"pregnancy_childbirth\": 0\r",
+							"      }\r",
+							"    ]\r",
+							"  }\r",
+							"]"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"user_id\": 1,\r\n    \"assessable_income\":{\r\n        \"forty_1\": 2000000,\r\n        \"forty_2\": 0,\r\n        \"forty_3\": 0,\r\n        \"forty_4\": 0,\r\n        \"forty_5\": 0,\r\n        \"forty_6\": 700000,\r\n        \"forty_7\": 0,\r\n        \"forty_8\": 400000\r\n      },\r\n    \"deductible\": {\r\n        \"personal\": 1,\r\n        \"child_per_person\": 3,\r\n        \"parent_per_person\": 2,\r\n        \"disabled\": 0,\r\n        \"pregnancy_childbirth\": 0\r\n      }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/tax/pit",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"tax",
+						"pit"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "cit",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "cit",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "        {\r\n            \"user_id\": 2,\r\n            \"data\": {\r\n                \"types\": \"NON SME\",\r\n                \"net_profit\": 10000000,\r\n                \"income\": 0,\r\n                \"expenses\": 0\r\n            }\r\n        }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/tax/cit",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"tax",
+						"cit"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "vat",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/tax/vat",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"tax",
+						"vat"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "vat",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "        {\r\n            \"user_id\": 2,\r\n            \"data\": {\r\n                \"types\": \"Product\",\r\n                \"product_name\": \"light\",\r\n                \"product_price\": 1070,\r\n                \"service_name\": \" \",\r\n                \"service_price\": 0\r\n            }\r\n        }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/tax/vat",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"tax",
+						"vat"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "history",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/history/3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"history",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "feature",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/feature/admin/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"feature",
+						"admin",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "feature",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"user_id\":0,\r\n   \"right\":\"admin\",\r\n   \"update\":[\r\n      {\r\n         \"tax\":\"VAT\",\r\n         \"detail\":[\r\n            {\r\n               \"vat\":\"8%\"\r\n            }\r\n         ]\r\n      }\r\n   ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/feature/admin/0",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"feature",
+						"admin",
+						"0"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "feature",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/feature/admin/0",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"feature",
+						"admin",
+						"0"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
